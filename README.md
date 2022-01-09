@@ -1,73 +1,23 @@
-# Implementation-of-LINE-Bot-by-Integrating-Immediate-Transportation-Open-Data
-map部分說明.txt
-擁有存取權的使用者
-未共用
-系統屬性
-類型
-文字
-大小
-1 KB
-儲存空間使用量
-1 KB
-位置
-code
-擁有者
-我
-上次修改日期
-我於 2018年2月8日修改過
-上次開啟日期
-我於 上午11:30開啟過
-建立日期
-2018年2月8日 (使用 Google Drive Web)
-新增說明
-檢視者可以下載
+1.	先準備一隻Line帳號以及到Line Developer申請LineBot帳號（只要有Line帳號都可以上去辦 ）
+2.	在本地端部署Webhook Server也就是python的flask套件用來和Line Sever溝通，可以選擇你熟悉的程式語言像js，python或c等等。 
+3.	申請domain(可以跟教授提出協助)
+4.	申請ssl 使用LetsEncrypt免費軟體
+5.	到伺服器設定檔裡面修改port的連接，使程式碼可以對外連線
+6.	在網路上找出欲使用的資料（例如各方面的數據資料或是xx論壇等等）
+7.	安裝python的butterflysoup套件跟request套件
+8.	使用python爬蟲程式爬下來放上資料庫。
+9.	再crontab上設定爬蟲設定美5分鐘執行一次就可以得到一直更新的資料
+10.	到Line Developer放上去自己的Webhook URL。
+11.	利用LINE Messaging API 實作主動推發與回覆的功能，也就是透過webhook裡面設定關鍵字偵測來決定採取甚麼動作。
 
-在以下網址開啟
-http://ts.thu.edu.tw/map.php
-http://vegetible.ithu.tw/map.php
+高速公路路況部分:
+使用者傳的訊息裡只要有highway，webhook就發送橫向式按鈕給使用者選目的地與終點，回傳地點給webhook後就可以撈資料庫裏面的高速公路訊息給使用者(像是平均車速)
 
- 由於不是https，用chorome開啟會無法自動定位
+高速公路攝影機部分:
+同上使用者傳的訊息裡只要有camera，webhook就發送橫向式按鈕給使用者選目的地與終點，回傳地點給webhook後就可以撈資料庫裏面的高速公路訊息給使用者(攝影機的URL)
 
-使用到以下檔案
-map.php ( 使用者開啟的網頁 )
-sql.php ( 從資料庫撈資料 )
-getsnapp.php ( 獲得道路貼齊結果並儲存 )
-roadsnapp.txt ( 將上面的貼齊結果整理起來放在這裡 )
+台中市路況部分:
+使用者回傳經緯度後，webhook接收經緯度再去比較資料庫上的路況經緯度資料給予車速回應
 
-使用 Notepad 編輯程式碼，網頁程式的php可以開原始碼(ctrl+U) debug
-
-程式內也含有部分註解
-ds
-
-map.php:
- 參考 Google Maps API simple polyline
- https://developers.google.com/maps/documentation/javascript/examples/polyline-simple?hl=zh-tw
-
- yo變數裡存了道路ID、壅塞程度( 在sql.php裡處理及分類 )
- yos變數存了個別道路的繪製方法( 座標群 )
-
- 由於有設透明度，如果把地圖zoom out看，會因道路重疊 顏色也跟著重疊，如果zoom in看就比較OK
-
-
-sql.php:
- 由資料庫抓資料
- ->篩選3小時內有更新的
- ->依車速區間分壅塞程度( 紅橘黃...... )
-
-
-getsnapp:
- 獲取貼齊道路API結果並儲存
-
-
-roadsnapp.txt:
-
- 由於當初php是在我自己電腦上用，而系統是架在學校的虛擬機上
- 所以另外做出這個丟到虛擬機上
- 
- 格式是javascript的二維陣列:
- [			<-中括號在map.php有加了 ( yos = [ <?php echo ... ?> ] )
-  array道路1[ 座標1, 座標2, 座標3...... ],
-  array道路2[],
-  array道路3[]
-  ......
- ]
+台中地圖部分:
+將資料庫的資料處理後，配合貼齊道路的結果，繪製於使用Google Maps API的網頁上
