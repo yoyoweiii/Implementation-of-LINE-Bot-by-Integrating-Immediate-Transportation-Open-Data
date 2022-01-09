@@ -37,7 +37,7 @@ roadsnapp.txt ( 將上面的貼齊結果整理起來放在這裡 )
 使用 Notepad 編輯程式碼，網頁程式的php可以開原始碼(ctrl+U) debug
 
 程式內也含有部分註解
-
+ds
 
 map.php:
  參考 Google Maps API simple polyline
